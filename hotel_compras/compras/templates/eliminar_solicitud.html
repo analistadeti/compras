@@ -1,0 +1,18 @@
+<!-- compras/templates/compras/eliminar_solicitud.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Solicitud de Compra</title>
+</head>
+<body>
+    <h1>Eliminar Solicitud de Compra</h1>
+    <p>¿Estás seguro que deseas eliminar la solicitud {{ solicitud }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmar Eliminación</button>
+        <a href="{% url 'lista_solicitudes' %}">Cancelar</a>
+    </form>
+</body>
+</html>

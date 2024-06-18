@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Solicitud</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles de Solicitud</h1>
+        <h2>Solicitud de compra #{{ solicitud.id }}</h2>
+        <p><strong>Solicitante:</strong> {{ solicitud.solicitante.username }}</p>
+        <p><strong>Descripción:</strong></p>
+        <p>{{ solicitud.descripcion }}</p>
+        <p><strong>Estado Actual:</strong> {{ solicitud.estado }}</p>
+        <p><strong>Fecha de Creación:</strong> {{ solicitud.fecha_creacion }}</p>
+        
+        <h3>Historial de Estados:</h3>
+        <ul>
+            {% for estado in estados %}
+            <li>{{ estado.estado }} - Actualizado por: {{ estado.actualizado_por.username }} el {{ estado.fecha_actualizacion }}</li>
+            {% endfor %}
+        </ul>
+        
+        <a href="{% url 'lista_solicitudes' %}">Volver a la lista de solicitudes</a>
+    </div>
+</body>
+</html>
+

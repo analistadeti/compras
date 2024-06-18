@@ -2,17 +2,45 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Solicitud de Compra</title>
+    {% load static %}
+    <!-- Enlace a Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Enlace a tu archivo CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>Actualizar Solicitud de Compra</h1>
-    <p>Estado actual: {{ estado_actual }}</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Actualizar</button>
-    </form>
+    <div class="container mt-4">
+        <h1>Actualizar Solicitud de Compra</h1>
+        <h2>Solicitud de compra #{{ solicitud.id }}</h2>
+        <p><strong>Solicitante:</strong> {{ solicitud.solicitante.username }}</p>
+        <p><strong>Descripción:</strong></p>
+        <p>{{ solicitud.descripcion }}</p>
+        <p><strong>Estado Actual:</strong> {{ solicitud.estado }}</p>
+        <p><strong>Fecha de Creación:</strong> {{ solicitud.fecha_creacion }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            {% if solicitud.estado == 'Cotización' %}
+                {% if request.user.departamento == 'contabilidad' or request.user.is_superuser %}
+                    <button type="submit" class="btn btn-primary">Guardar Estado</button>
+                {% else %}
+                    <p>El estado no se puede cambiar porque no eres parte del departamento de contabilidad.</p>
+                {% endif %}
+            {% else %}
+                <button type="submit" class="btn btn-primary">Guardar Estado</button>
+            {% endif %}
+        </form>
+
+        <a href="{% url 'lista_solicitudes' %}" class="btn btn-secondary mt-3">Volver a la lista de solicitudes</a>
+    </div>
+
+    <!-- Scripts de Bootstrap (jQuery primero, luego Popper.js, luego Bootstrap JS) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-

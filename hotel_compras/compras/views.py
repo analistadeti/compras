@@ -12,17 +12,19 @@ from django.db import IntegrityError
 from .forms import ProfileForm  # Asegúrate de que este formulario esté definido en tu archivo forms.py
 from .models import Profile
 
+
+
+@login_required
 def lista_solicitudes(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.profile.departamento == 'contabilidad':
+        # Si es superusuario o pertenece a contabilidad, mostrar todas las solicitudes
         solicitudes = SolicitudCompra.objects.all()
     else:
-        perfil = Profile.objects.get(user=request.user)
-        if perfil.departamento:
-            solicitudes = SolicitudCompra.objects.filter(solicitante__profile__departamento=perfil.departamento)
-        else:
-            solicitudes = SolicitudCompra.objects.none()  # O manejarlo de otra manera apropiada
+        # Obtener todas las solicitudes creadas por usuarios con el mismo departamento
+        solicitudes = SolicitudCompra.objects.filter(solicitante__profile__departamento=request.user.profile.departamento)
 
     return render(request, 'lista_solicitudes.html', {'solicitudes': solicitudes})
+
 def detalle_solicitud(request, solicitud_id):
     solicitud = get_object_or_404(SolicitudCompra, pk=solicitud_id)
     estados = EstadoCompra.objects.filter(solicitud=solicitud)

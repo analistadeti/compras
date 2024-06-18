@@ -15,13 +15,19 @@ class EstadoCompraForm(forms.ModelForm):
     class Meta:
         model = EstadoCompra
         fields = ['estado']
-        widgets = {
-            'estado': forms.Select(choices=EstadoCompra.ESTADOS_CHOICES),
-        }
         labels = {
             'estado': 'Nuevo estado',  # Cambia el label aquí
         }
 
+    def __init__(self, *args, **kwargs):
+        solicitud = kwargs.pop('solicitud', None)
+        super().__init__(*args, **kwargs)
+        if solicitud:
+            siguiente_estado = solicitud.siguiente_estado()
+            if siguiente_estado:
+                self.fields['estado'].choices = [(siguiente_estado, siguiente_estado)]
+            else:
+                self.fields['estado'].choices = []  # O manejar de otra manera cuando no hay más estados
 
 
 

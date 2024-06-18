@@ -1,4 +1,3 @@
-<!-- En templates/compras/actualizar_solicitud.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,6 +6,7 @@
 </head>
 <body>
     <h1>Actualizar Solicitud de Compra</h1>
+    <p>Estado actual: {{ estado_actual }}</p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
@@ -14,6 +14,5 @@
     </form>
 </body>
 </html>
-
 
 

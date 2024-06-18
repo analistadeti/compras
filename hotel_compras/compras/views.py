@@ -51,7 +51,7 @@ def actualizar_solicitud(request, solicitud_id):
     solicitud = get_object_or_404(SolicitudCompra, pk=solicitud_id)
     
     if request.method == 'POST':
-        form = EstadoCompraForm(request.POST)
+        form = EstadoCompraForm(request.POST, solicitud=solicitud)
         if form.is_valid():
             estado_nuevo = form.save(commit=False)
             estado_nuevo.solicitud = solicitud
@@ -62,10 +62,9 @@ def actualizar_solicitud(request, solicitud_id):
             solicitud.save()
             return redirect('detalle_solicitud', solicitud_id=solicitud.id)
     else:
-        form = EstadoCompraForm()
+        form = EstadoCompraForm(solicitud=solicitud)
     
-    return render(request, 'actualizar_solicitud.html', {'form': form, 'solicitud': solicitud})
-
+    return render(request, 'actualizar_solicitud.html', {'form': form, 'solicitud': solicitud, 'estado_actual': solicitud.estado})
 
 
 @login_required

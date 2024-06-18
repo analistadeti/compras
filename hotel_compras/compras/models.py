@@ -8,9 +8,8 @@ class SolicitudCompra(models.Model):
         ('Aprobado', 'Aprobado'),
         ('En Proceso', 'En Proceso'),
         ('Finalizado', 'Finalizado'),
-        ('Cancelado', 'Cancelado'),
     ]
-    ESTADOS_ORDENADOS = ['Solicitado', 'Cotización', 'Aprobado', 'En Proceso', 'Finalizado', 'Cancelado']
+    ESTADOS_ORDENADOS = ['Solicitado', 'Cotización', 'Aprobado', 'En Proceso', 'Finalizado']
 
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     solicitante = models.ForeignKey(User, on_delete=models.CASCADE)

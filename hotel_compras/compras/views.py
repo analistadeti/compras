@@ -26,7 +26,14 @@ def lista_solicitudes(request):
 def detalle_solicitud(request, solicitud_id):
     solicitud = get_object_or_404(SolicitudCompra, pk=solicitud_id)
     estados = EstadoCompra.objects.filter(solicitud=solicitud)
-    return render(request, 'detalle_solicitud.html', {'solicitud': solicitud, 'estados': estados})
+    
+    context = {
+        'solicitud': solicitud,
+        'estados': estados,
+        'estados_ordenados': SolicitudCompra.ESTADOS_ORDENADOS,  # Pasar ESTADOS_ORDENADOS al contexto
+    }
+
+    return render(request, 'detalle_solicitud.html', context)
 
 # Otras vistas para crear, actualizar y eliminar solicitudes y estados
 @login_required
